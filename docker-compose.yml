@@ -3,16 +3,31 @@ services:
     build:
       context: .
       dockerfile: src/Dockerfile
+    env_file:
+      - .env
     ports:
-      - "8000:8000"
+      - "${API_PORT}:8000"
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /code/src
+        - action: rebuild
+          path: ./src
 
   nginx:
     image: nginx:1.25
     ports:
-      - "81:80"
+      - "${NGINX_PORT}:80"
+    env_file:
+      - .env
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - /home/arsen/Documents:/var/www/documents:ro
+      - ${MEDIA_PATH}:/var/www/documents:ro
+    develop:
+      watch:
+        - action: rebuild
+          path: ./nginx/nginx.conf
 
     depends_on:
       - api
