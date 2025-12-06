@@ -1,11 +1,11 @@
 #
-FROM python:3.12-slim as requirements-stage
+FROM python:3.12-slim AS requirements-stage
 
 #
 WORKDIR /tmp
 
 #
-RUN pip install poetry
+RUN pip install poetry poetry-plugin-export
 
 #
 COPY ./pyproject.toml ./poetry.lock* /tmp/
@@ -26,7 +26,7 @@ COPY --from=requirements-stage /tmp/requirements.txt /code/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 #
-COPY ./app /code/app
+COPY ./src /code/src
 
 #
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
