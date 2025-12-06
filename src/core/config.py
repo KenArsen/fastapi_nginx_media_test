@@ -8,4 +8,9 @@ class Settings(BaseSettings):
         case_sensitive=True,
     )
 
+    API_PORT: int = 8000
+    API_HOST: str = "0.0.0.0"
+
+    NGINX_PORT: int = 81
+
 settings = Settings()
