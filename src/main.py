@@ -11,6 +11,11 @@ async def root():
     return {"message": "Hello World"}
 
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
+
 @app.get("/ip")
 async def get_ip(request: Request):
     return {
